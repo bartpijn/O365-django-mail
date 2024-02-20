@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "o865-django-mail"
+version = "0.1.0"
+description = "Django email backend for sending emails over Office 365 API"
+authors = ["Bart Pijnenburg <bart.developer@proton.me>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9, <4"
+django = ">=3.2, <6"
+office365-rest-python-client = "^2.5.5"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.0.0"
+pytest = "^8.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
