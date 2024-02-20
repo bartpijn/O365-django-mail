@@ -9,6 +9,8 @@ from office365.graph_client import GraphClient
 
 
 class O365EmailBackend(BaseEmailBackend):
+    """Django email backend for sending emails via Microsoft Graph API (Office 365)."""
+
     def __init__(self, fail_silently=False, **kwargs):
         super(O365EmailBackend, self).__init__(fail_silently=fail_silently, **kwargs)
 
@@ -19,7 +21,9 @@ class O365EmailBackend(BaseEmailBackend):
         except:
             if not self.fail_silently:
                 raise ImproperlyConfigured(
-                    "Please set O365_MAIL_CLIENT_ID, O365_MAIL_CLIENT_SECRET and O365_MAIL_TENANT_ID in Django settings to use O365 mail.")
+                    "Please set O365_MAIL_CLIENT_ID, O365_MAIL_CLIENT_SECRET and "
+                    "O365_MAIL_TENANT_ID in Django settings to use O365 mail."
+                )
 
         self.client = GraphClient(self._acquire_token_msal)
 
@@ -52,12 +56,9 @@ class O365EmailBackend(BaseEmailBackend):
             return True
         return False
 
-    @staticmethod
-    def _acquire_token_msal() -> dict:
-        """
-        Acquire token via MSAL
-        """
-        authority_url = 'https://login.microsoftonline.com/{tenant_id_or_name}'
+    def _acquire_token_msal(self) -> dict:
+        """Acquire token via MSAL."""
+        authority_url = f'https://login.microsoftonline.com/{self._tenant_id}'
         app = msal.ConfidentialClientApplication(
             authority=authority_url,
             client_id='{client_id}',
